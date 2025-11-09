@@ -11,8 +11,8 @@ class ControlsWidget extends StatefulWidget {
     required this.onRightStart,
     required this.onLeftEnd,
     required this.onRightEnd,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _ControlsWidgetState createState() => _ControlsWidgetState();
