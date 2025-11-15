@@ -4,8 +4,6 @@ import '../widgets/floor_widget.dart';
 import '../widgets/car_widget.dart';
 import '../widgets/controls_widget.dart';
 import 'about_screen.dart';
-import 'experience_screen.dart';
-import 'projects_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,10 +18,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool movingLeft = false;
   bool movingRight = false;
+  bool _isLoopRunning = false; // prevent multiple loops
 
   final double cloudParallax = 0.3;
   final double floorParallax = 1.0;
   final double objectParallax = 1.0;
+  final double stepSize = 0.02;
 
   final double leftLimit = 0.25;
   final double rightLimit = 0.75;
@@ -31,19 +31,33 @@ class _HomeScreenState extends State<HomeScreen> {
   static const double floorHeight = 250;
 
   void startLeft() {
-    movingLeft = true;
-    _gameLoop();
+    if (!movingLeft) {
+      movingLeft = true;
+      movingRight = false; // cancel opposite direction
+      _gameLoop();
+    }
   }
 
   void startRight() {
-    movingRight = true;
-    _gameLoop();
+    if (!movingRight) {
+      movingRight = true;
+      movingLeft = false; // cancel opposite direction
+      _gameLoop();
+    }
   }
 
   void stopLeft() => movingLeft = false;
   void stopRight() => movingRight = false;
 
+  void stopAll() {
+    movingLeft = false;
+    movingRight = false;
+  }
+
   void _gameLoop() async {
+    if (_isLoopRunning) return;
+    _isLoopRunning = true;
+
     while (movingLeft || movingRight) {
       setState(() {
         if (movingLeft) _moveLeft();
@@ -51,7 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       await Future.delayed(const Duration(milliseconds: 16));
     }
+
+    _isLoopRunning = false;
   }
+
+  // Add this inside _HomeScreenState
 
   void _moveLeft() {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -95,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: FloorWidget(position: worldX * floorParallax),
         ),
 
-        // SIGNPOST - TAPPABLE
+        // SIGNPOST
         Positioned(
           bottom: floorHeight * 0.28,
           left: worldX * objectParallax + 300,
@@ -104,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const AboutScreen()),
-              ); // example
+              );
             },
             child: Image.asset('assets/signpost-home.png', width: 140),
           ),
@@ -119,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onLeftEnd: stopLeft,
           onRightStart: startRight,
           onRightEnd: stopRight,
+          onStopAll: stopAll, // <-- pass the new callback
         ),
       ],
     );
