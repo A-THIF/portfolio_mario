@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../widgets/menu_button.dart';
+import 'portffolio_scroll_screen.dart';
 
 class OptimizedProfileLayout extends StatefulWidget {
   // Function from parent to call when the game is unlocked
@@ -113,13 +114,35 @@ class _OptimizedProfileLayoutState extends State<OptimizedProfileLayout> {
                   runSpacing: 15,
                   alignment: WrapAlignment.center,
                   children: [
-                    _buildButton("ABOUT", 'assets/about_button.png', () {}),
-                    _buildButton("EXP", 'assets/experience_button.png', () {}),
-                    _buildButton(
-                      "PROJECTS",
-                      'assets/projects_button.png',
-                      () {},
-                    ),
+                    _buildButton("ABOUT", 'assets/about_button.png', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const PortfolioScrollPage(
+                            initialSection: 'ABOUT',
+                          ),
+                        ),
+                      );
+                    }),
+                    _buildButton("EXP", 'assets/experience_button.png', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              const PortfolioScrollPage(initialSection: 'EXP'),
+                        ),
+                      );
+                    }),
+                    _buildButton("PROJECTS", 'assets/projects_button.png', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const PortfolioScrollPage(
+                            initialSection: 'PROJECTS',
+                          ),
+                        ),
+                      );
+                    }),
                   ],
                 ),
 

@@ -6,7 +6,6 @@ import '../widgets/controls_widget.dart';
 import '../widgets/signpost_widget.dart';
 import '../widgets/profile_details.dart';
 import '../screens/optimized_profile_layout.dart';
-import 'about_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -169,12 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
           floorHeight: floorHeight,
           asset: 'assets/signpost-aboutme.png',
           width: 140,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AboutScreen()),
-            );
-          },
+          onTap: () {},
         ),
         SignpostWidget(
           worldX: worldX,
