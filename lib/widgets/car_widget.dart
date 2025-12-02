@@ -19,7 +19,7 @@ class CarWidget extends StatelessWidget {
         padding: EdgeInsets.only(bottom: bottomOffset),
         child: SizedBox(
           width: carWidth,
-          child: Image.asset('assets/car_man1.png', fit: BoxFit.contain),
+          child: Image.asset('assets/images/car_man1.png', fit: BoxFit.contain),
         ),
       ),
     );

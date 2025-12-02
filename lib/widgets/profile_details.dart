@@ -152,7 +152,7 @@ class ProfileDetailsCard extends StatelessWidget {
       ),
       child: CircleAvatar(
         radius: radius,
-        backgroundImage: const AssetImage('assets/profile.png'),
+        backgroundImage: const AssetImage('assets/images/profile.png'),
         backgroundColor: Colors.black26,
       ),
     );
@@ -232,7 +232,8 @@ class ProfileDetailsCard extends StatelessWidget {
   }) {
     List<Widget> buttons = [
       MenuButton(
-        imagePath: 'assets/about_button.png', // Image now contains "ABOUT" text
+        imagePath:
+            'assets/images/about_button.png', // Image now contains "ABOUT" text
         width: btnWidth,
         height: btnHeight,
         onPressed: () {},
@@ -240,7 +241,7 @@ class ProfileDetailsCard extends StatelessWidget {
       const SizedBox(width: 10, height: 10),
       MenuButton(
         imagePath:
-            'assets/experience_button.png', // Image now contains "EXP" text
+            'assets/images/experience_button.png', // Image now contains "EXP" text
         width: btnWidth,
         height: btnHeight,
         onPressed: () {},
@@ -248,7 +249,7 @@ class ProfileDetailsCard extends StatelessWidget {
       const SizedBox(width: 10, height: 10),
       MenuButton(
         imagePath:
-            'assets/projects_button.png', // Image now contains "PROJECTS" text
+            'assets/images/projects_button.png', // Image now contains "PROJECTS" text
         width: btnWidth,
         height: btnHeight,
         onPressed: () {},

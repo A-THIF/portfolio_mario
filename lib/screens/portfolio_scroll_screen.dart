@@ -97,7 +97,7 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
 
           // Sky (Static)
           Positioned.fill(
-            child: Image.asset('assets/sky.png', fit: BoxFit.cover),
+            child: Image.asset('assets/images/sky.png', fit: BoxFit.cover),
           ),
 
           // MOVING CLOUDS (Uses your CloudsWidget)

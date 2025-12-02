@@ -21,7 +21,7 @@ class FloorWidget extends StatelessWidget {
             left: -effectiveX,
             bottom: 0,
             child: Image.asset(
-              'assets/grass_floor.png',
+              'assets/images/grass_floor.png',
               height: floorHeight,
               width: screenWidth * 2,
               repeat: ImageRepeat.repeatX,
@@ -31,7 +31,7 @@ class FloorWidget extends StatelessWidget {
             left: screenWidth * 2 - effectiveX,
             bottom: 0,
             child: Image.asset(
-              'assets/grass_floor.png',
+              'assets/images/grass_floor.png',
               height: floorHeight,
               width: screenWidth * 2,
               repeat: ImageRepeat.repeatX,

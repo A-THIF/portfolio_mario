@@ -21,7 +21,7 @@ class CloudsWidget extends StatelessWidget {
             left: fixedWidth * index - effectiveX,
             top: 0,
             child: Image.asset(
-              'assets/clouds.png',
+              'assets/images/clouds.png',
               width: fixedWidth,
               fit: BoxFit.cover,
             ),

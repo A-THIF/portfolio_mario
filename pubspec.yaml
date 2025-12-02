@@ -23,17 +23,18 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/car_man1.png
-    - assets/clouds.png
-    - assets/grass_floor.png
-    - assets/sky.png
-    - assets/signpost-home.png
-    - assets/signpost-skills.png
-    - assets/signpost-leadership.png
-    - assets/signpost-experience.png
-    - assets/signpost-project.png
-    - assets/signpost-aboutme.png
-    - assets/profile.png
-    - assets/about_button.png
-    - assets/experience_button.png
-    - assets/projects_button.png
+    - assets/images/car_man1.png
+    - assets/images/clouds.png
+    - assets/images/grass_floor.png
+    - assets/images/sky.png
+    - assets/images/signpost-home.png
+    - assets/images/signpost-skills.png
+    - assets/images/signpost-leadership.png
+    - assets/images/signpost-experience.png
+    - assets/images/signpost-project.png
+    - assets/images/signpost-aboutme.png
+    - assets/images/profile.png
+    - assets/images/about_button.png
+    - assets/images/experience_button.png
+    - assets/images/projects_button.png
+    - assets/images/click_me.png

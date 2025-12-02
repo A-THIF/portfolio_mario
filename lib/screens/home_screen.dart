@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import '../widgets/clouds_widget.dart';
-import '../widgets/floor_widget.dart';
-import '../widgets/car_widget.dart';
-import '../widgets/controls_widget.dart';
-import '../widgets/signpost_widget.dart';
-import '../widgets/profile_details.dart';
-import '../screens/optimized_profile_layout.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:async';
+
+// IMPORTS
+import '../widgets/menu_button.dart';
+import '../data/portfolio_data.dart';
+import 'portfolio_scroll_screen.dart';
+import 'game_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,226 +17,347 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  double worldX = 0;
-  double carX = 0.5;
+  int _clickCount = 0;
 
-  bool movingLeft = false;
-  bool movingRight = false;
-  bool _isLoopRunning = false;
-  bool _forceShowGame = false;
+  void _handleSecretTap() {
+    setState(() {
+      _clickCount++;
+    });
 
-  final double cloudParallax = 0.3;
-  final double floorParallax = 1.0;
-  final double signpostPositionX = 5;
-  final double signpostOffsetX = 70;
-  final double leftLimit = 0.25;
-  final double rightLimit = 0.75;
-  static const double floorHeight = 63;
+    if (_clickCount == 1) {
+      _showSnack("Tap 2 more times to unlock the Game World!");
+    } else if (_clickCount == 2) {
+      _showSnack("1 more time...");
+    } else if (_clickCount >= 3) {
+      ScaffoldMessenger.of(context).clearSnackBars();
 
-  void startLeft() {
-    if (!movingLeft) {
-      movingLeft = true;
-      movingRight = false;
-      _gameLoop();
+      // 🔥 NEW LOGIC: Check Screen Size before showing warning
+      _checkAndLaunchGame();
+
+      _clickCount = 0; // Reset for next time
     }
   }
 
-  void startRight() {
-    if (!movingRight) {
-      movingRight = true;
-      movingLeft = false;
-      _gameLoop();
+  void _checkAndLaunchGame() {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
+
+    bool isSafeForGame = false;
+
+    // 1. LAPTOP/DESKTOP (Safe if width > 1000 and height isn't tiny)
+    if (width >= 1000) {
+      isSafeForGame = height >= 400;
     }
-  }
-
-  void stopLeft() => movingLeft = false;
-  void stopRight() => movingRight = false;
-
-  void stopAll() {
-    movingLeft = false;
-    movingRight = false;
-  }
-
-  void _gameLoop() async {
-    if (_isLoopRunning) return;
-    _isLoopRunning = true;
-
-    while (movingLeft || movingRight) {
-      if (!mounted) break;
-      setState(() {
-        if (movingLeft) _moveLeft();
-        if (movingRight) _moveRight();
-      });
-      await Future.delayed(const Duration(milliseconds: 16));
+    // 2. MOBILE (Safe if width < 600 and height > 480 ie. Portrait Mode)
+    else if (width < 600) {
+      isSafeForGame = height >= 480;
+    }
+    // 3. TABLET / SPLIT SCREEN (Width 600-1000 is always 'unsafe' aspect ratio)
+    else {
+      isSafeForGame = false;
     }
 
-    _isLoopRunning = false;
-  }
-
-  void _moveLeft() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final bool isMobile = screenWidth < 600;
-    final double speedBoost = isMobile ? 1.4 : 1.0;
-    final double carSpeed = screenWidth * 0.005 * speedBoost;
-    final double worldSpeed = screenWidth * 0.004 * speedBoost;
-
-    if (carX > leftLimit) {
-      carX -= carSpeed / screenWidth;
+    if (isSafeForGame) {
+      // ✅ Screen is perfect? Go straight to game!
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const GameScreen()),
+      );
     } else {
-      worldX += worldSpeed;
+      // ⚠️ Screen is weird? Show warning first.
+      _showWarningDialog();
     }
   }
 
-  void _moveRight() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final bool isMobile = screenWidth < 600;
-    final double speedBoost = isMobile ? 1.4 : 1.0;
-    final double carSpeed = screenWidth * 0.005 * speedBoost;
-    final double worldSpeed = screenWidth * 0.004 * speedBoost;
+  void _showSnack(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg, style: GoogleFonts.fredoka()),
+        duration: const Duration(milliseconds: 800),
+        backgroundColor: Colors.black87,
+      ),
+    );
+  }
 
-    if (carX < rightLimit) {
-      carX += carSpeed / screenWidth;
-    } else {
-      worldX -= worldSpeed;
-    }
+  void _showWarningDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const GameWarningDialog(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // 1. Force override (if user tapped 3 times on Optimized screen)
-    if (_forceShowGame) return _buildGameWorld();
+    final size = MediaQuery.of(context).size;
+    final isSmallHeight = size.height < 500;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double width = constraints.maxWidth;
-        double height = constraints.maxHeight;
+    return Scaffold(
+      backgroundColor: const Color(0xFF2666A6),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: isSmallHeight ? 10 : 30,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 1. PROFILE PHOTO
+                Container(
+                  width: (size.height * 0.22).clamp(80.0, 120.0),
+                  height: (size.height * 0.22).clamp(80.0, 120.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.yellow, width: 4),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: const CircleAvatar(
+                    backgroundImage: AssetImage(PortfolioData.profileImage),
+                    backgroundColor: Colors.black26,
+                  ),
+                ),
 
-        bool showGame = false;
+                SizedBox(height: isSmallHeight ? 10 : 20),
 
-        // -----------------------------------------------------------
-        // 📏 RESPONSIVE LOGIC
-        // -----------------------------------------------------------
+                // 2. NAME
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    PortfolioData.name,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.luckiestGuy(
+                      fontSize: 32,
+                      color: Colors.white,
+                      letterSpacing: 1.5,
+                      shadows: const [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 2,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
 
-        // 1. LAPTOP / DESKTOP (Width >= 1000)
-        // We check this FIRST to protect Laptops from the 850px height check.
-        // Laptops are landscape, so their height is often small (600-800px).
-        // We use a lower safety threshold (400px) for them.
-        if (width >= 1000) {
-          if (height < 400) {
-            showGame = false; // Too short even for laptop
-          } else {
-            showGame = true; // Show Game
-          }
-        }
-        // 2. MOBILE / TABLET (Width < 1000)
-        else {
-          // Here we apply the strict height check you requested (850px).
-          // This ensures only very tall mobile screens show the game.
-          if (height < 850) {
-            showGame = false;
-          } else if (width < 600) {
-            showGame = true; // Tall Mobile -> Show Game
-          } else {
-            showGame = false; // Tablet Zone (600-1000) -> Optimized
-          }
-        }
-        // -----------------------------------------------------------
+                const SizedBox(height: 5),
 
-        if (!showGame) {
-          return OptimizedProfileLayout(
-            onUnlockGame: () {
-              setState(() {
-                _forceShowGame = true;
-              });
-            },
-          );
-        }
+                // 3. TAGLINE
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    PortfolioData.tagline,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.fredoka(
+                      fontSize: 18,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.yellow[200],
+                    ),
+                  ),
+                ),
 
-        return _buildGameWorld();
+                SizedBox(height: isSmallHeight ? 15 : 30),
+
+                // 4. MENU BUTTONS
+                Wrap(
+                  spacing: 15,
+                  runSpacing: 10,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    _buildButton(
+                      "ABOUT",
+                      'assets/images/about_button.png',
+                      'ABOUT',
+                    ),
+                    _buildButton(
+                      "EXP",
+                      'assets/images/experience_button.png',
+                      'EXP',
+                    ),
+                    _buildButton(
+                      "PROJECTS",
+                      'assets/images/projects_button.png',
+                      'PROJECTS',
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: isSmallHeight ? 15 : 30),
+
+                // 5. SOCIALS
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _socialIcon(FontAwesomeIcons.linkedin),
+                    const SizedBox(width: 25),
+                    _socialIcon(FontAwesomeIcons.github),
+                    const SizedBox(width: 25),
+                    _socialIcon(FontAwesomeIcons.envelope),
+                  ],
+                ),
+
+                SizedBox(height: isSmallHeight ? 15 : 30),
+
+                // 6. SECRET TAP AREA
+                GestureDetector(
+                  onTap: _handleSecretTap,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    color: Colors.transparent, // Increases touch area
+                    child: Column(
+                      children: [
+                        Text(
+                          "(Want to play the game?)",
+                          style: GoogleFonts.fredoka(
+                            fontSize: 12,
+                            color: Colors.white54,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _clickCount > 0
+                              ? "Unlock Game? (${3 - _clickCount})"
+                              : "Tap 3 times here to start",
+                          style: GoogleFonts.fredoka(
+                            fontSize: 12,
+                            color: Colors.yellow.withOpacity(0.7),
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton(String label, String asset, String sectionKey) {
+    return MenuButton(
+      imagePath: asset,
+      width: 110,
+      height: 45,
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => PortfolioScrollPage(initialSection: sectionKey),
+          ),
+        );
       },
     );
   }
 
-  Widget _buildGameWorld() {
-    return Stack(
-      children: [
-        // SKY
-        Positioned.fill(
-          child: Image.asset('assets/sky.png', fit: BoxFit.cover),
-        ),
+  Widget _socialIcon(IconData icon) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: Icon(icon, color: Colors.yellow, size: 35),
+    );
+  }
+}
 
-        // CLOUDS
-        Positioned.fill(child: CloudsWidget(position: -worldX * cloudParallax)),
+// ------------------------------------------
+// THE WARNING DIALOG
+// ------------------------------------------
+class GameWarningDialog extends StatefulWidget {
+  const GameWarningDialog({super.key});
 
-        // FLOOR
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: FloorWidget(position: worldX * floorParallax),
-        ),
+  @override
+  State<GameWarningDialog> createState() => _GameWarningDialogState();
+}
 
-        // SIGNPOSTS
-        SignpostWidget(
-          worldX: worldX,
-          positionX: 300,
-          floorHeight: floorHeight,
-          asset: 'assets/signpost-home.png',
-          width: 140,
-          onTap: () {},
-        ),
-        SignpostWidget(
-          worldX: worldX,
-          positionX: 900,
-          floorHeight: floorHeight,
-          asset: 'assets/signpost-aboutme.png',
-          width: 140,
-          onTap: () {},
-        ),
-        SignpostWidget(
-          worldX: worldX,
-          positionX: 1500,
-          floorHeight: floorHeight,
-          asset: 'assets/signpost-skills.png',
-          width: 140,
-        ),
-        SignpostWidget(
-          worldX: worldX,
-          positionX: 2100,
-          floorHeight: floorHeight,
-          asset: 'assets/signpost-leadership.png',
-          width: 140,
-        ),
-        SignpostWidget(
-          worldX: worldX,
-          positionX: 2700,
-          floorHeight: floorHeight,
-          asset: 'assets/signpost-experience.png',
-          width: 140,
-        ),
-        SignpostWidget(
-          worldX: worldX,
-          positionX: 3300,
-          floorHeight: floorHeight,
-          asset: 'assets/signpost-project.png',
-          width: 140,
-        ),
+class _GameWarningDialogState extends State<GameWarningDialog> {
+  int _secondsRemaining = 5;
+  Timer? _timer;
 
-        // CAR
-        CarWidget(screenX: carX),
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
 
-        // PROFILE CARD
-        Positioned(
-          left: worldX + signpostPositionX + signpostOffsetX,
-          bottom: floorHeight + 150,
-          child: const ProfileDetailsCard(),
-        ),
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_secondsRemaining > 0) {
+        setState(() {
+          _secondsRemaining--;
+        });
+      } else {
+        _timer?.cancel();
+      }
+    });
+  }
 
-        // CONTROLS
-        ControlsWidget(
-          onLeftStart: startLeft,
-          onLeftEnd: stopLeft,
-          onRightStart: startRight,
-          onRightEnd: stopRight,
-          onStopAll: stopAll,
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      title: Text(
+        "WARNING !!!",
+        textAlign: TextAlign.center,
+        style: GoogleFonts.luckiestGuy(color: Colors.red, fontSize: 28),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "The game world is best experienced on larger screens (Desktop/Laptop).",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.fredoka(fontSize: 16, color: Colors.black87),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            "On smaller screens, it might look squashed. Proceed at your own risk!",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.fredoka(fontSize: 14, color: Colors.black54),
+          ),
+        ],
+      ),
+      actionsAlignment: MainAxisAlignment.center,
+      actions: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _secondsRemaining == 0 ? Colors.red : Colors.grey,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          ),
+          onPressed: _secondsRemaining > 0
+              ? null
+              : () {
+                  Navigator.pop(context); // Close Dialog
+                  Navigator.pushReplacement(
+                    // Go to Game (User insisted)
+                    context,
+                    MaterialPageRoute(builder: (_) => const GameScreen()),
+                  );
+                },
+          child: Text(
+            _secondsRemaining > 0
+                ? "Wait $_secondsRemaining s"
+                : "OK! I UNDERSTAND",
+            style: GoogleFonts.vt323(fontSize: 20),
+          ),
         ),
       ],
     );
