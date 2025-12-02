@@ -25,20 +25,20 @@ class _HomeScreenState extends State<HomeScreen> {
   // ---------------------------------------------------------
   Future<void> _preloadGameAssets(BuildContext context) async {
     final List<String> assets = [
-      'assets/images/car_man1.png'
-          'assets/images/clouds.png'
-          'assets/images/grass_floor.png'
-          'assets/images/sky.png'
-          'assets/images/signpost-home.png'
-          'assets/images/signpost-skills.png'
-          'assets/images/signpost-leadership.png'
-          'assets/images/signpost-experience.png'
-          'assets/images/signpost-project.png'
-          'assets/images/signpost-aboutme.png'
-          'assets/images/profile.png'
-          'assets/images/about_button.png'
-          'assets/images/experience_button.png'
-          'assets/images/projects_button.png',
+      'assets/images/car_man1.png',
+      'assets/images/clouds.png',
+      'assets/images/grass_floor.png',
+      'assets/images/sky.png',
+      'assets/images/signpost-home.png',
+      'assets/images/signpost-skills.png',
+      'assets/images/signpost-leadership.png',
+      'assets/images/signpost-experience.png',
+      'assets/images/signpost-project.png',
+      'assets/images/signpost-aboutme.png',
+      'assets/images/profile.png',
+      'assets/images/about_button.png',
+      'assets/images/experience_button.png',
+      'assets/images/projects_button.png',
     ];
 
     for (var path in assets) {
