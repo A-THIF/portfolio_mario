@@ -13,6 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^6.3.2  # Add this line
   font_awesome_flutter: ^9.2.0
+  url_launcher: ^6.3.2
 
 
 dev_dependencies:
@@ -37,3 +38,31 @@ flutter:
     - assets/images/about_button.png
     - assets/images/experience_button.png
     - assets/images/projects_button.png
+    - assets/skills/django.png
+    - assets/skills/flutter.png
+    - assets/skills/flask.png
+    - assets/skills/firebase.png
+    - assets/skills/supabase.png
+    - assets/skills/sql.png
+    - assets/skills/c.png
+    - assets/skills/python.png
+    - assets/skills/java.png
+    - assets/skills/dart.png
+    - assets/skills/html.png
+    - assets/skills/css.png
+    - assets/skills/javascript.png
+    - assets/skills/tensorflow.png
+    - assets/skills/pandas.png
+    - assets/skills/numpy.png
+    - assets/skills/opencv.png
+    - assets/skills/jupyter.png
+    - assets/skills/vscode.png
+    - assets/skills/github.png
+    - assets/skills/git.png
+    - assets/skills/selenium.png
+    - assets/skills/hugging_face.png
+    - assets/skills/figma.png
+    - assets/skills/filezilla.png
+    - assets/skills/putty.png
+    - assets/skills/arduino.png
+    - assets/skills/raspberrypi.png

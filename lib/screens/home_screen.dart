@@ -6,8 +6,8 @@ import 'dart:async';
 // IMPORTS
 import '../widgets/menu_button.dart';
 import '../data/portfolio_data.dart';
-import 'portfolio_scroll_screen.dart';
-import 'game_screen.dart';
+import 'portfolio_scroll_screen.dart'; // Ensure this file exists
+import 'game_screen.dart'; // Ensure this file exists
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,12 +18,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _clickCount = 0;
-  bool _isLoadingGame = false; // To show spinner for direct launch
+  bool _isLoadingGame = false;
 
   // ---------------------------------------------------------
   // 🚀 ASSET PRELOADING LOGIC
   // ---------------------------------------------------------
   Future<void> _preloadGameAssets(BuildContext context) async {
+    // 🔥 FIXED: Added commas to prevent "InvalidType" error
     final List<String> assets = [
       'assets/images/car_man1.png',
       'assets/images/clouds.png',
@@ -45,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
       try {
         await precacheImage(AssetImage(path), context);
       } catch (e) {
+        // Just print error, don't crash app if one image fails
         debugPrint("Error loading image: $path");
       }
     }
@@ -61,10 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _showSnack("1 more time...");
     } else if (_clickCount >= 3) {
       ScaffoldMessenger.of(context).clearSnackBars();
-
-      // Check screen size before deciding path
       _checkAndLaunchGame();
-
       _clickCount = 0;
     }
   }
@@ -83,16 +82,16 @@ class _HomeScreenState extends State<HomeScreen> {
     // 2. MOBILE PORTRAIT
     else if (width < 600) {
       isSafeForGame = height >= 480;
-    } else {
+    }
+    // 3. TABLET / SPLIT SCREEN
+    else {
       isSafeForGame = false;
     }
 
     if (isSafeForGame) {
-      // ✅ Screen is perfect?
-      // Show loading spinner, load images, THEN go.
+      // ✅ Screen is perfect? Direct Launch
       setState(() => _isLoadingGame = true);
-
-      await _preloadGameAssets(context); // Wait for images
+      await _preloadGameAssets(context);
 
       if (!mounted) return;
       setState(() => _isLoadingGame = false);
@@ -102,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MaterialPageRoute(builder: (_) => const GameScreen()),
       );
     } else {
-      // ⚠️ Screen is weird? Show warning (Preloading happens inside dialog).
+      // ⚠️ Screen is weird? Show Warning
       _showWarningDialog();
     }
   }
@@ -283,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // 🎮 LOADING OVERLAY (Shows when Game is unlocking)
+          // 🎮 LOADING OVERLAY
           if (_isLoadingGame)
             Container(
               color: Colors.black87,
@@ -333,9 +332,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// ------------------------------------------
-// THE WARNING DIALOG
-// ------------------------------------------
+// WARNING DIALOG
 class GameWarningDialog extends StatefulWidget {
   const GameWarningDialog({super.key});
 
@@ -347,15 +344,13 @@ class _GameWarningDialogState extends State<GameWarningDialog> {
   int _secondsRemaining = 5;
   Timer? _timer;
   bool _assetsLoaded = false;
-
   @override
   void initState() {
     super.initState();
     _startTimer();
-    _preloadAssetsInBackground(); // 🔥 Start loading immediately!
+    _preloadAssetsInBackground();
   }
 
-  // PRELOAD ASSETS WHILE TIMER TICKS
   Future<void> _preloadAssetsInBackground() async {
     final List<String> assets = [
       'assets/images/sky.png',
@@ -412,7 +407,7 @@ class _GameWarningDialogState extends State<GameWarningDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "The game world is best experienced on larger screens (Desktop/Laptop).",
+            "The game world is best experienced on larger screens.",
             textAlign: TextAlign.center,
             style: GoogleFonts.fredoka(fontSize: 16, color: Colors.black87),
           ),
@@ -435,9 +430,7 @@ class _GameWarningDialogState extends State<GameWarningDialog> {
           onPressed: _secondsRemaining > 0
               ? null
               : () {
-                  Navigator.pop(context); // Close Dialog
-
-                  // Only navigate if assets are loaded (or if user waited long enough)
+                  Navigator.pop(context);
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (_) => const GameScreen()),
@@ -446,7 +439,7 @@ class _GameWarningDialogState extends State<GameWarningDialog> {
           child: Text(
             _secondsRemaining > 0
                 ? "Wait $_secondsRemaining s"
-                : (_assetsLoaded ? "OK! I UNDERSTAND" : "LOADING..."),
+                : "OK! I UNDERSTAND",
             style: GoogleFonts.vt323(fontSize: 20),
           ),
         ),

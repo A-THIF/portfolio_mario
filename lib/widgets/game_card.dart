@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class GameCard extends StatelessWidget {
   final double width;
-  final double height;
+  final double? height; // 🔥 FIX 1: Make height nullable/optional
   final Widget child;
   final EdgeInsets padding;
 
   const GameCard({
     super.key,
     required this.width,
-    required this.height,
+    this.height, // Optional: If null, it grows with content
     required this.child,
     this.padding = const EdgeInsets.all(16),
   });
@@ -18,14 +18,14 @@ class GameCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CustomPaint(
-        size: Size(width, height),
+        // 🔥 FIX 2: Remove specific 'size'. CustomPaint will auto-size to the child Container.
         painter: GameCardPainter(
-          fillColor: const Color(0xFF2666A6), // Sea-blue wooden texture base
+          fillColor: const Color(0xFF2666A6),
           borderColor: Colors.yellow,
         ),
         child: Container(
           width: width,
-          height: height,
+          height: height, // If null, container wraps content
           padding: padding,
           child: child,
         ),
