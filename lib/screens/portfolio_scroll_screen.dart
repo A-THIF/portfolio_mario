@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:url_launcher/url_launcher.dart'; 
+import 'package:url_launcher/url_launcher.dart';
 
 // IMPORT YOUR WIDGETS & DATA
 import '../widgets/clouds_widget.dart';
@@ -18,7 +18,6 @@ class PortfolioScrollPage extends StatefulWidget {
 
 class _PortfolioScrollPageState extends State<PortfolioScrollPage>
     with SingleTickerProviderStateMixin {
-  
   late AnimationController _controller;
   final ScrollController _scrollController = ScrollController();
 
@@ -46,11 +45,21 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
 
   void _handleInitialScroll(String section) {
     switch (section) {
-      case 'ABOUT': _scrollToSection(_aboutKey); break;
-      case 'EXP': _scrollToSection(_expKey); break;
-      case 'PROJECTS': _scrollToSection(_projectsKey); break;
-      case 'SKILLS': _scrollToSection(_skillsKey); break;
-      case 'CONNECT': _scrollToSection(_connectKey); break;
+      case 'ABOUT':
+        _scrollToSection(_aboutKey);
+        break;
+      case 'EXP':
+        _scrollToSection(_expKey);
+        break;
+      case 'PROJECTS':
+        _scrollToSection(_projectsKey);
+        break;
+      case 'SKILLS':
+        _scrollToSection(_skillsKey);
+        break;
+      case 'CONNECT':
+        _scrollToSection(_connectKey);
+        break;
     }
   }
 
@@ -100,16 +109,14 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
               animation: _controller,
               builder: (context, child) {
                 // 🔥 FIX 2: Multiplied by 1200 (Image Width) for perfect looping
-                final double speed = _controller.value * 1200; 
+                final double speed = _controller.value * 1200;
                 return CloudsWidget(position: speed);
               },
             ),
           ),
 
           // LAYER 3: DARK OVERLAY
-          Positioned.fill(
-            child: Container(color: Colors.black54),
-          ),
+          Positioned.fill(child: Container(color: Colors.black54)),
 
           // LAYER 4: CONTENT
           Column(
@@ -119,75 +126,95 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
               Expanded(
                 child: SingleChildScrollView(
                   controller: _scrollController,
-                  padding: const EdgeInsets.symmetric(vertical: 40),
-                  child: Center(
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 800),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: [
-                          
-                          // 1. ABOUT
-                          _buildSectionBlock(
-                            "ABOUT ME",
-                            _aboutKey,
-                            Text(
-                              PortfolioData.aboutMe,
-                              textAlign: TextAlign.justify,
-                              style: GoogleFonts.fredoka(color: Colors.white, fontSize: 16, height: 1.5),
-                            ),
-                          ),
+                  padding:
+                      EdgeInsets.zero, // Zero padding so footer touches bottom
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 40),
+                      Center(
+                        child: Container(
+                          constraints: const BoxConstraints(maxWidth: 800),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              // 1. ABOUT
+                              _buildSectionBlock(
+                                "ABOUT ME",
+                                _aboutKey,
+                                Text(
+                                  PortfolioData.aboutMe,
+                                  textAlign: TextAlign.justify,
+                                  style: GoogleFonts.fredoka(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    height: 1.5,
+                                  ),
+                                ),
+                              ),
 
-                          // 2. EXPERIENCE
-                          _buildSectionBlock(
-                            "EXPERIENCE",
-                            _expKey,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: PortfolioData.experience.map((exp) => _buildExperienceItem(exp)).toList(),
-                            ),
-                          ),
+                              // 2. EXPERIENCE
+                              _buildSectionBlock(
+                                "EXPERIENCE",
+                                _expKey,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: PortfolioData.experience
+                                      .map((exp) => _buildExperienceItem(exp))
+                                      .toList(),
+                                ),
+                              ),
 
-                          // 3. PROJECTS
-                          _buildSectionBlock(
-                            "PROJECTS",
-                            _projectsKey,
-                            Column(
-                              children: PortfolioData.projects.map((proj) => _buildProjectItem(proj)).toList(),
-                            ),
-                          ),
+                              // 3. PROJECTS
+                              _buildSectionBlock(
+                                "PROJECTS",
+                                _projectsKey,
+                                Column(
+                                  children: PortfolioData.projects
+                                      .map((proj) => _buildProjectItem(proj))
+                                      .toList(),
+                                ),
+                              ),
 
-                          // 4. SKILLS
-                          _buildSectionBlock(
-                            "SKILLS",
-                            _skillsKey,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: PortfolioData.skills.map((cat) => _buildSkillCategory(cat)).toList(),
-                            ),
-                          ),
+                              // 4. SKILLS
+                              _buildSectionBlock(
+                                "SKILLS",
+                                _skillsKey,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: PortfolioData.skills
+                                      .map((cat) => _buildSkillCategory(cat))
+                                      .toList(),
+                                ),
+                              ),
 
-                          // 5. LEADERSHIP
-                          _buildSectionBlock(
-                            "LEADERSHIP",
-                            _leadershipKey,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: PortfolioData.leadership.map((lead) => _buildExperienceItem(lead)).toList(),
-                            ),
-                          ),
+                              // 5. LEADERSHIP
+                              _buildSectionBlock(
+                                "LEADERSHIP",
+                                _leadershipKey,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: PortfolioData.leadership
+                                      .map((lead) => _buildExperienceItem(lead))
+                                      .toList(),
+                                ),
+                              ),
 
-                          // 6. CONNECT
-                          _buildSectionBlock(
-                            "CONNECT",
-                            _connectKey,
-                            _buildConnectSection(),
-                          ),
+                              // 6. CONNECT
+                              _buildSectionBlock(
+                                "CONNECT",
+                                _connectKey,
+                                _buildConnectSection(),
+                              ),
 
-                          const SizedBox(height: 100),
-                        ],
+                              const SizedBox(height: 50),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+
+                      // 🔥 7. FOOTER (Now renders correctly on Laptop)
+                      _buildFooter(),
+                    ],
                   ),
                 ),
               ),
@@ -199,6 +226,70 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
   }
 
   // --- WIDGET HELPERS ---
+  Widget _buildFooter() {
+    return Container(
+      width: double.infinity,
+      height: 100,
+      child: Stack(
+        children: [
+          // 1. GRASS (Background)
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/grass_floor.png',
+              repeat: ImageRepeat.repeatX,
+              fit: BoxFit.fitHeight,
+              alignment: Alignment.topCenter,
+            ),
+          ),
+
+          // 2. CONTENT (No black overlay, text moved up)
+          Align(
+            alignment: Alignment.topCenter, // sticks to top
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 10,
+              ), // adjust this to move down/up
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // <--- important
+                children: [
+                  Text(
+                    "© ${PortfolioData.footerYear} ${PortfolioData.name}",
+                    style: GoogleFonts.vt323(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 2,
+                          offset: Offset(1, 1),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 3),
+                  Text(
+                    "Built with Flutter & 💙",
+                    style: GoogleFonts.fredoka(
+                      color: Colors.yellowAccent,
+                      fontSize: 14,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 2,
+                          offset: Offset(1, 1),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildExperienceItem(ExperienceItem item) {
     return Padding(
@@ -206,18 +297,40 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(item.role, style: GoogleFonts.luckiestGuy(color: Colors.yellow, fontSize: 22)),
+          Text(
+            item.role,
+            style: GoogleFonts.luckiestGuy(color: Colors.yellow, fontSize: 22),
+          ),
           const SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(child: Text(item.company, style: const TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.bold))),
+              Flexible(
+                child: Text(
+                  item.company,
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               if (item.duration.isNotEmpty)
-                Text(item.duration, style: const TextStyle(color: Colors.white54, fontSize: 14)),
+                Text(
+                  item.duration,
+                  style: const TextStyle(color: Colors.white54, fontSize: 14),
+                ),
             ],
           ),
           const SizedBox(height: 8),
-          Text(item.description, style: GoogleFonts.fredoka(color: Colors.white, fontSize: 15, height: 1.4)),
+          Text(
+            item.description,
+            style: GoogleFonts.fredoka(
+              color: Colors.white,
+              fontSize: 15,
+              height: 1.4,
+            ),
+          ),
           const Divider(color: Colors.white24, height: 30),
         ],
       ),
@@ -242,29 +355,97 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
               Expanded(
                 child: Text(
                   item.title,
-                  style: GoogleFonts.vt323(color: Colors.yellowAccent, fontSize: 26, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.vt323(
+                    color: Colors.yellowAccent,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Row(
                 children: [
-                  if (item.githubLink != null) 
+                  if (item.githubLink != null)
                     _clickableIcon(FontAwesomeIcons.github, item.githubLink!),
-                  
-                  if (item.linkedinLink != null) 
-                    _clickableIcon(FontAwesomeIcons.linkedin, item.linkedinLink!),
+                  if (item.linkedinLink != null)
+                    _clickableIcon(
+                      FontAwesomeIcons.linkedin,
+                      item.linkedinLink!,
+                    ),
                 ],
-              )
+              ),
             ],
           ),
           const SizedBox(height: 5),
-          Text(
-            item.shortDescription,
-            style: const TextStyle(color: Colors.white60, fontStyle: FontStyle.italic, fontSize: 13),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.yellowAccent,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  item.year,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.cyanAccent,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  item.type,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: item.tags
+                .map(
+                  (tag) => Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white12,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white24),
+                    ),
+                    child: Text(
+                      tag,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+          const SizedBox(height: 12),
           Text(
             item.fullDescription,
-            style: GoogleFonts.fredoka(color: Colors.white, fontSize: 15, height: 1.4),
+            style: GoogleFonts.fredoka(
+              color: Colors.white,
+              fontSize: 15,
+              height: 1.4,
+            ),
           ),
         ],
       ),
@@ -290,7 +471,10 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(category.categoryName, style: GoogleFonts.vt323(color: Colors.cyanAccent, fontSize: 24)),
+          Text(
+            category.categoryName,
+            style: GoogleFonts.vt323(color: Colors.cyanAccent, fontSize: 24),
+          ),
           const SizedBox(height: 12),
           Wrap(
             spacing: 15,
@@ -309,7 +493,8 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
                     asset,
                     width: 40,
                     height: 40,
-                    errorBuilder: (c, e, s) => const Icon(Icons.broken_image, color: Colors.white54),
+                    errorBuilder: (c, e, s) =>
+                        const Icon(Icons.broken_image, color: Colors.white54),
                   ),
                 ),
               );
@@ -332,11 +517,23 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _socialButton(FontAwesomeIcons.linkedin, "LinkedIn", PortfolioData.linkedin),
+            _socialButton(
+              FontAwesomeIcons.linkedin,
+              "LinkedIn",
+              PortfolioData.linkedin,
+            ),
             const SizedBox(width: 25),
-            _socialButton(FontAwesomeIcons.github, "GitHub", PortfolioData.github),
+            _socialButton(
+              FontAwesomeIcons.github,
+              "GitHub",
+              PortfolioData.github,
+            ),
             const SizedBox(width: 25),
-            _socialButton(FontAwesomeIcons.envelope, "Email", PortfolioData.email),
+            _socialButton(
+              FontAwesomeIcons.envelope,
+              "Email",
+              PortfolioData.email,
+            ),
           ],
         ),
       ],
@@ -352,7 +549,10 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
           children: [
             Icon(icon, color: Colors.yellow, size: 40),
             const SizedBox(height: 8),
-            Text(label, style: GoogleFonts.vt323(color: Colors.white, fontSize: 18)),
+            Text(
+              label,
+              style: GoogleFonts.vt323(color: Colors.white, fontSize: 18),
+            ),
           ],
         ),
       ),
@@ -387,7 +587,14 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: onTap,
-        child: Text(text, style: GoogleFonts.vt323(color: Colors.yellow, fontSize: 22, fontWeight: FontWeight.bold)),
+        child: Text(
+          text,
+          style: GoogleFonts.vt323(
+            color: Colors.yellow,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
@@ -403,7 +610,18 @@ class _PortfolioScrollPageState extends State<PortfolioScrollPage>
             padding: const EdgeInsets.only(left: 10, bottom: 15),
             child: Text(
               title,
-              style: GoogleFonts.luckiestGuy(fontSize: 32, color: Colors.white, letterSpacing: 2, shadows: [const Shadow(color: Colors.black, blurRadius: 4, offset: Offset(2, 2))]),
+              style: GoogleFonts.luckiestGuy(
+                fontSize: 32,
+                color: Colors.white,
+                letterSpacing: 2,
+                shadows: [
+                  const Shadow(
+                    color: Colors.black,
+                    blurRadius: 4,
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              ),
             ),
           ),
           LayoutBuilder(

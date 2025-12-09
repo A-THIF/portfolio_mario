@@ -8,11 +8,11 @@ class CloudsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     // Assume cloud image is wide enough to loop
-    final double fixedWidth = 1000.0; 
+    final double fixedWidth = 1000.0;
 
     // Calculate how many images needed to fill screen + 1 buffer
     final int tiles = (screenWidth / fixedWidth).ceil() + 1;
-    
+
     // Calculate offset for smooth scrolling
     final double effectiveX = position % fixedWidth;
 

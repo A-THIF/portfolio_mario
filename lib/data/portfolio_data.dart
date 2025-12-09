@@ -8,7 +8,7 @@ class ProjectItem {
   final String? githubLink;
   final String? linkedinLink;
   final String year;
-  final String type; // e.g., "IoT", "App", "Web", "AI", "Game"
+  final String type;
   final List<String> tags;
 
   const ProjectItem({
@@ -51,8 +51,11 @@ class PortfolioData {
   static const String tagline = "INSPIRE & INFLUENCE";
   static const String profileImage = "assets/images/profile.png";
 
+  // 🔥 ADDED FOOTER YEAR
+  static const String footerYear = "Last Update @ 2025";
+
   static const String aboutMe = """
-Hi, I'm Mohamed Athif N—a passionate builder who loves turning ideas into reality.
+Hi, I'm Mohamed Athif N — a passionate builder who loves turning ideas into reality.
 
 I’m driven by curiosity, energized by building, and inspired when my work empowers others to learn, innovate, and push boundaries. My fascination with technology has always been two-sided.
 
@@ -64,7 +67,7 @@ On the other side, I’m the innovator with precision. I constantly explore new 
   // --- SOCIAL LINKS ---
   static const String linkedin = "https://www.linkedin.com/in/n-mohamed-athif";
   static const String github = "https://github.com/A-THIF";
-  static const String email = "mailto:athif.n.official@gmail.com";
+  static const String email = "mailto:nmohamedathif@gmail.com";
 
   // --- EXPERIENCE DATA ---
   static const List<ExperienceItem> experience = [
@@ -112,21 +115,14 @@ On the other side, I’m the innovator with precision. I constantly explore new 
       ],
     ),
     SkillCategory(
-      categoryName: "Frontend / Web",
-      imageAssets: [
-        'assets/skills/html.png',
-        'assets/skills/css.png',
-        'assets/skills/flutter.png',
-        'assets/skills/figma.png',
-      ],
-    ),
-    SkillCategory(
       categoryName: "Backend / Frameworks",
       imageAssets: [
         'assets/skills/django.png',
+        'assets/skills/flutter.png',
         'assets/skills/flask.png',
         'assets/skills/firebase.png',
         'assets/skills/supabase.png',
+        'assets/skills/sql.png',
       ],
     ),
     SkillCategory(
@@ -146,7 +142,10 @@ On the other side, I’m the innovator with precision. I constantly explore new 
         'assets/skills/github.png',
         'assets/skills/git.png',
         'assets/skills/selenium.png',
-        'assets/skills/huggingface.png',
+        'assets/skills/hugging_face.png',
+        'assets/skills/figma.png',
+        'assets/skills/filezilla.png',
+        'assets/skills/putty.png',
       ],
     ),
     SkillCategory(
@@ -158,9 +157,8 @@ On the other side, I’m the innovator with precision. I constantly explore new 
     ),
   ];
 
-  // --- PROJECTS DATA (Sorted Newest to Oldest) ---
+  // --- PROJECTS DATA ---
   static const List<ProjectItem> projects = [
-    // 2025 Projects
     ProjectItem(
       title: "Retinoscopy Prototype",
       year: "2025",
@@ -205,8 +203,6 @@ On the other side, I’m the innovator with precision. I constantly explore new 
       tags: ["Django", "Game Dev", "Web"],
       githubLink: "https://github.com/A-THIF/Startup_crisis",
     ),
-
-    // 2024 Projects
     ProjectItem(
       title: "Tailor Todo",
       year: "2024",
@@ -242,9 +238,10 @@ On the other side, I’m the innovator with precision. I constantly explore new 
       title: "Space Snake",
       year: "2024",
       type: "Game",
-      shortDescription: "Flutter, Dart, CustomPainter, Gesture Controls",
+      shortDescription:
+          "Skills: Flutter, Dart, CustomPainter, Gesture Controls",
       fullDescription:
-          "A modern, offline remake of the classic Snake game with gesture controls, dynamic graphics, and smooth Flutter animations.",
+          "A modern, offline remake of the classic Snake game with gesture controls, dynamic graphics, and smooth Flutter animations. Focused on intuitive gameplay and visual design.",
       tags: ["Flutter", "Game Dev", "CustomPainter"],
       githubLink: "https://github.com/A-THIF/Snake_Game_Flutter",
       linkedinLink:
@@ -276,7 +273,7 @@ On the other side, I’m the innovator with precision. I constantly explore new 
       title: "Peripheral Vision (Sports)",
       year: "2024",
       type: "IoT / Hardware",
-      shortDescription: "Raspberry Pi, Python, Computer Vision",
+      shortDescription: "Raspberry Pi, Python, Computer Vision, Hardware",
       fullDescription:
           "An automated peripheral vision testing system for athletes using Raspberry Pi, Pi Camera, and LED arrays for accurate and consistent assessment.",
       tags: ["Raspberry Pi", "Python", "Computer Vision"],
@@ -289,7 +286,7 @@ On the other side, I’m the innovator with precision. I constantly explore new 
       type: "IoT / Wearable",
       shortDescription: "Arduino, Bluetooth, IoT, Ultrasonic Sensor",
       fullDescription:
-          "A wearable smart hat that detects obstacles using sensors and alerts users via Bluetooth-connected smartphone with text-to-speech.",
+          "A wearable smart hat that detects obstacles using sensors and alerts users via Bluetooth-connected smartphone with text-to-speech. Focused on accessibility and assistive technology.",
       tags: ["Arduino", "IoT", "Bluetooth", "Assistive Tech"],
       linkedinLink:
           "https://www.linkedin.com/posts/n-mohamed-athif_throwback-envisioncap-innovationjourney-activity-7316201672433618945-fGys",
@@ -320,13 +317,6 @@ On the other side, I’m the innovator with precision. I constantly explore new 
   // --- LEADERSHIP & VOLUNTEERING ---
   static const List<ExperienceItem> leadership = [
     ExperienceItem(
-      role: "Core Team Member",
-      company: "AI Geeks Chennai",
-      duration: "2025 – Present",
-      description:
-          "Assisted in organizing AI meetups and community-driven tech events. Handled coordination, planning, and on-ground execution.",
-    ),
-    ExperienceItem(
       role: "IEEE Coordinator",
       company: "College IEEE Branch",
       duration: "2023 – Present",
@@ -339,6 +329,13 @@ On the other side, I’m the innovator with precision. I constantly explore new 
       duration: "2023 – Present",
       description:
           "Participated in cyber rally and social initiatives. Engaged in community outreach programs promoting welfare across campus.",
+    ),
+    ExperienceItem(
+      role: "Core Team Member",
+      company: "AI Geeks Chennai",
+      duration: "2025 – Present",
+      description:
+          "Assisted in organizing AI meetups and community-driven tech events. Handled coordination, planning, and on-ground execution.",
     ),
   ];
 }
